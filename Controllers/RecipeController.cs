@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AlDenteAPI.Models;
+using AlDenteAPI.Data;
 
 namespace AlDenteAPI.Controllers
 {
@@ -13,12 +14,13 @@ namespace AlDenteAPI.Controllers
     [ApiController]
     public class RecipeController : ControllerBase
     {
-        private readonly RecipeContext _context;
+        private readonly RecipeService _recipeService;
 
-        public RecipeController(RecipeContext context)
+        public RecipeController(RecipeService recipeService)
         {
-            _context = context;
+            _recipeService = recipeService;
         }
+
 
         // GET: api/Recipe
         [HttpGet]
