@@ -1,9 +1,18 @@
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+// builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// other services
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
 
 var app = builder.Build();
 
@@ -14,13 +23,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
-app.MapGet("/test", () => 
+// app.MapGet("/test", () =>
+// {
+//     return new { text = "Hello World From Al Dente API" };
+// })
+// .WithName("GetTest")
+// .WithOpenApi();
+
+app.MapGet("/testdb", () =>
 {
-    return new { text = "Hello World From Al Dente API" };
+    return new { text = "Hello World From /testdb endpoint" };
 })
-.WithName("GetTest")
+.WithName("GetTestDB")
 .WithOpenApi();
 
 app.Run();
