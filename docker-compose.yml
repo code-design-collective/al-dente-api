@@ -1,26 +1,30 @@
 version: '3.4'
 
 services:
-  app:
-    image: al-dente-api
+  al-dente.api:
+    image: ${DOCKER_REGISTRY-}al-dente-api
+    container_name: al-dente.api
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./Dockerfile
     ports:
-      - "8080:8080"
-    depends_on:
-      - db
-  db:
+      - "8000:8000"
+      - "8001:8001"
+
+  al-dente.db:
     image: postgres:latest
-    container_name: al-dente-db
+    container_name: al-dente.db
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: al-dente-db
+      - POSTGRES_DB=al-dente-db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - ./.containers/al-dente-db:/var/lib/postgresql/data
     ports:
       - 5432:5432
 
-volumes:
-  postgres_data:
+  al-dente.cache:
+    image: redis:latest
+    restart: always
+    ports:
+      - '6379:6379'

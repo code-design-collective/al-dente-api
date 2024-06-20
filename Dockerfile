@@ -1,29 +1,23 @@
-# Stage 1: Build the application
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /source
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER app
+WORKDIR /app
+EXPOSE 8000
+EXPOSE 8001
 
-# Copy the project files and restore dependencies
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["./AlDenteAPI.csproj", "./"]
+RUN dotnet restore "./AlDenteAPI.csproj"
 COPY . .
 
-# List files to debug directory structure
-RUN ls -R /source
+RUN dotnet build "./AlDenteAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# Specify the solution file for dotnet restore
-RUN dotnet restore AlDenteAPI.sln
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./AlDenteAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# Build and publish the application
-RUN dotnet publish AlDenteAPI.sln -c Release -o /app/Release/publish
-
-# Stage 2: Create the runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM base AS final
 WORKDIR /app
-
-# Copy the published files from the build stage
-COPY --from=build /app/Release/publish .
-
-# Set environment variables and expose the port
-ENV ASPNETCORE_URLS=http://+:8080
-EXPOSE 8080
-
-# Define the entry point for the container
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "AlDenteAPI.dll"]
