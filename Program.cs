@@ -5,6 +5,15 @@ using AlDenteAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add HTTPS configuration
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenLocalhost(8001, listenOptions =>
+    {
+        listenOptions.UseHttps();
+    });
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -28,8 +37,6 @@ app.MapRecipeEndpoints();
 app.MapGet("/test", () =>
 {
     return new { text = "Hello World From Al Dente API" };
-})
-.WithName("GetTest")
-.WithOpenApi();
+});
 
 app.Run();
