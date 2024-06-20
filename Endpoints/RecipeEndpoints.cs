@@ -17,7 +17,9 @@ public static class RecipeEndpoints
             var recipe = new Recipe
             {
                 Name = request.Name,
-                Price = request.Price
+                Description = request.Description,
+                Ingredients = request.Ingredients,
+                Instructions = request.Instructions
             };
 
             context.Add(recipe);
@@ -69,7 +71,9 @@ public static class RecipeEndpoints
             }
 
             recipe.Name = request.Name;
-            recipe.Price = request.Price;
+            recipe.Description = request.Description;
+            recipe.Ingredients = request.Ingredients;
+            recipe.Instructions = request.Instructions;
 
             await context.SaveChangesAsync(ct);
 
