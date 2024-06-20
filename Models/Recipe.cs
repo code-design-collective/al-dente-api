@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 
 
-namespace AlDenteAPI.Models
+namespace AlDenteAPI.Models;
+
 {
     public class Recipe
     {

@@ -12,7 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
@@ -32,9 +33,12 @@ if (app.Environment.IsDevelopment())
 // .WithName("GetTest")
 // .WithOpenApi();
 
-app.MapGet("/testdb", () =>
+app.MapGet("/testdb", async () =>
 {
-    return new { text = "Hello World From /testdb endpoint" };
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var recipeCount = await db.Recipes.CountAsync();
+    return new { RecipeCount = recipeCount };
 })
 .WithName("GetTestDB")
 .WithOpenApi();
