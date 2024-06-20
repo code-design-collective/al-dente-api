@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 
+using AlDenteAPI.Database
+;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -26,21 +28,21 @@ if (app.Environment.IsDevelopment())
 
 // app.UseHttpsRedirection();
 
-// app.MapGet("/test", () =>
-// {
-//     return new { text = "Hello World From Al Dente API" };
-// })
-// .WithName("GetTest")
-// .WithOpenApi();
-
-app.MapGet("/testdb", async () =>
+app.MapGet("/test", () =>
 {
-    using var scope = app.Services.CreateScope();
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    var recipeCount = await db.Recipes.CountAsync();
-    return new { RecipeCount = recipeCount };
+    return new { text = "Hello World From Al Dente API" };
 })
-.WithName("GetTestDB")
+.WithName("GetTest")
 .WithOpenApi();
+
+// app.MapGet("/testdb", async () =>
+// {
+//     using var scope = app.Services.CreateScope();
+//     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+//     var recipeCount = await db.Recipes.CountAsync();
+//     return new { RecipeCount = recipeCount };
+// })
+// .WithName("GetTestDB")
+// .WithOpenApi();
 
 app.Run();
