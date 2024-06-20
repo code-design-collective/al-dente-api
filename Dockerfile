@@ -20,4 +20,5 @@ RUN dotnet publish "./AlDenteAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+# COPY ./https/aspnetapp.pfx /https/
 ENTRYPOINT ["dotnet", "AlDenteAPI.dll"]

@@ -4,11 +4,12 @@ services:
   al-dente.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=8000
-      - ASPNETCORE_HTTPS_PORTS=8001
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
     ports:
       - "8000:8000"
       - "8001:8001"
     volumes:
       - ~/Library/Application\ Support/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ~/.aspnet/https:/root/.aspnet/https
+      - ~/.aspnet/https:/https:ro
