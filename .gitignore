@@ -352,3 +352,5 @@ FodyWeavers.xsd
 
 # Local History for Visual Studio
 .localhistory/
+
+.containers/
