@@ -10,5 +10,5 @@ services:
       - "8000:8000"
       - "8001:8001"
     volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ~/Library/Application\ Support/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ~/.aspnet/https:/root/.aspnet/https
